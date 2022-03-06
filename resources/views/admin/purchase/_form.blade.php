@@ -17,8 +17,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3">%</span>
             </div>
-            <input type="number" class="form-control" name="tax" id="tax" aria-describedby="basic-addon3"
-                placeholder="18">
+            <input type="number" class="form-control" name="tax" id="tax" value="18" aria-describedby="basic-addon3">
         </div>
     </div>
 </div>
@@ -33,7 +32,7 @@
         <div class="form-group">
             <label for="product_id">Producto</label>
             {{--  <select class="form-control selectpicker" data-live-search="true" name="product_id" id="product_id">  --}}
-            <select class="form-control" name="product_id" id="product_id">
+            <select class="form-control" name="product_id" id="product_id1">
                 <option value="" disabled selected>Selecccione un producto</option>
                 @foreach ($products as $product)
                 <option value="{{$product->id}}">{{$product->name}}</option>

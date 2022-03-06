@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Caffeinated\Shinobi\Models\Role;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -21,8 +22,8 @@ class UsersTableSeeder extends Seeder
 
         $user = User::create([
             'name'=>'Cristian',
-            'email'=>'Cristian@gmail.com',
-            'password'=>'$2y$10$o.CnHSqHSCQ7qSj4zlJU7u0N1QiKqrIjJ2bLP8j/wdw3W8NCA3DkK',
+            'email'=>'admin@admin.com',
+            'password'=> Hash::make('password'),
         ]);
 
         $user->roles()->sync(1);

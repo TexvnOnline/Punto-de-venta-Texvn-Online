@@ -37,7 +37,9 @@
                         </div>
                         <div class="col-md-4 text-center">
                             <label class="form-control-label"><strong>Vendedor</strong></label>
-                            <p>{{$sale->user->name}}</p>
+                            <p>
+                                <a href="{{route('users.show',$sale->user)}}">{{$sale->user->name}}</a>
+                            </p>
                         </div>
                         <div class="col-md-4 text-center">
                             <label class="form-control-label"><strong>Número Venta</strong></label>

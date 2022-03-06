@@ -67,13 +67,13 @@
     $("#guardar").hide();
 
 
-    var product_id = $('#product_id');
-    product_id.change(function(){
+    var product_id1 = $('#product_id1');
+    product_id1.change(function(){
         $.ajax({
             url: "{{route('get_products_by_id')}}",
             method: 'GET',
             data:{
-                product_id: product_id.val(),
+                product_id: product_id1.val(),
             },
             success: function(data){
                 $("#code").val(data.code);
@@ -91,7 +91,7 @@
             dataType: 'json',
             success:function(data){
                 console.log(data);
-                $("#product_id").val(data.id);
+                $("#product_id1").val(data.id);
             }
         });
     }
@@ -107,8 +107,8 @@
     
     function agregar() {
     
-        product_id = $("#product_id").val();
-        producto = $("#product_id option:selected").text();
+        product_id = $("#product_id1").val();
+        producto = $("#product_id1 option:selected").text();
         quantity = $("#quantity").val();
         price = $("#price").val();
         impuesto = $("#tax").val();
