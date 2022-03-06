@@ -1,8 +1,13 @@
-<div class="form-group">
-  <label for="name">Nombre</label>
-  <input type="text" name="name" id="name" class="form-control" placeholder="Nombre" required>
-</div>
-<div class="form-group">
-  <label for="description">Descripción</label>
-  <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+<div class="form-group" >
+    <div id="icon_div">
+        <label for="icon">Icono</label>
+        <select class="form-control" name="icon" id="icon" style="width: 100%">
+            <option value="" selected>-- Seleccione un icono --</option>
+            @foreach (getIconsArray() as $icon)
+            <option value="{{$icon}}"
+            {{ old('icon', $category->icon) == $icon ? 'selected' : ''}}
+            >{{$icon}}</option>
+            @endforeach
+        </select>
+    </div>
 </div>

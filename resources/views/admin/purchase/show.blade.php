@@ -19,9 +19,9 @@
             Detalles de compra
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
-                <li class="breadcrumb-item"><a href="#">Compras</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
+                <li class="breadcrumb-item"><a href="{{route('purchases.index')}}">Compras</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Detalles de compra</li>
             </ol>
         </nav>
@@ -98,12 +98,9 @@
                             </table>
                         </div>
                     </div>
-                    
-
-
                 </div>
                 <div class="card-footer text-muted">
-                    <a href="{{route('purchases.index')}}" class="btn btn-primary float-right">Regresar</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-primary float-right">Regresar</a>
                 </div>
             </div>
         </div>
@@ -113,5 +110,4 @@
 @endsection
 @section('scripts')
 {!! Html::script('melody/js/profile-demo.js') !!}
-{!! Html::script('melody/js/data-table.js') !!}
 @endsection

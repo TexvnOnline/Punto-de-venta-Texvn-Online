@@ -1,14 +1,7 @@
 @extends('layouts.admin')
 @section('title','Gestión de categorías')
 @section('styles')
-<style type="text/css">
-    .unstyled-button {
-        border: none;
-        padding: 0;
-        background: none;
-      }
-</style>
-
+{!! Html::style('treegrid/css/jquery.treegrid.css') !!}
 @endsection
 @section('options')
 @endsection
@@ -21,8 +14,8 @@
             Categorías
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Categorías</li>
             </ol>
         </nav>
@@ -31,67 +24,67 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Categorías</h4>
-                        {{--  <i class="fas fa-ellipsis-v"></i>  --}}
+                        <h4 class="card-title"></h4>
                         <div class="btn-group">
-                            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
+                            <a href="{{route('categories.create')}}" type="button" class="btn btn-info ">
+                                <i class="fas fa-plus"></i> Nuevo
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                              <a href="{{route('categories.create')}}" class="dropdown-item">Agregar</a>
-                              {{--  <button class="dropdown-item" type="button">Another action</button>
-                              <button class="dropdown-item" type="button">Something else here</button>  --}}
-                            </div>
-                          </div>
+                        </div>
                     </div>
-
                     <div class="table-responsive">
-                        <table id="order-listing" class="table">
+                        <table id="category_listing" class="table tree">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
                                     <th>Nombre</th>
+                                    <th>Modulo</th>
+                                    <th>Cantidad</th>
                                     <th>Descripción</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($categories as $category)
-                                <tr>
-                                    <th scope="row">{{$category->id}}</th>
-                                    <td>
-                                        <a href="{{route('categories.show',$category)}}">{{$category->name}}</a>
-                                    </td>
-                                    <td>{{$category->description}}</td>
-                                    <td style="width: 50px;">
-                                        {!! Form::open(['route'=>['categories.destroy',$category], 'method'=>'DELETE']) !!}
-
-                                        <a class="jsgrid-button jsgrid-edit-button" href="{{route('categories.edit', $category)}}" title="Editar">
-                                            <i class="far fa-edit"></i>
-                                        </a>
-                                        
-                                        <button class="jsgrid-button jsgrid-delete-button unstyled-button" type="submit" title="Eliminar">
-                                            <i class="far fa-trash-alt"></i>
-                                        </button>
-
-                                        {!! Form::close() !!}
-                                    </td>
-                                </tr>
+                                @include('admin.category._category_list', [
+                                    'item' => $category,
+                                    'form_number' => '0'
+                                ])
+                                @if ($category->has_subcategory())
+                                    @foreach ($category->subcategories as $subcategory_1)
+                                    @include('admin.category._category_list', [
+                                        'item' => $subcategory_1,
+                                        'form_number' => '1'
+                                    ])
+                                    @if ($subcategory_1->has_subcategory())
+                                        @foreach ($subcategory_1->subcategories as $subcategory_2)
+                                        @include('admin.category._category_list', [
+                                            'item' => $subcategory_2,
+                                            'form_number' => '2'
+                                        ])
+                                        @endforeach
+                                    @endif
+                                    @endforeach
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-                {{--  <div class="card-footer text-muted">
+                <div class="card-footer text-muted">
                     {{$categories->render()}}
-                </div>  --}}
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
 @section('scripts')
-{!! Html::script('melody/js/data-table.js') !!}
+
+{!! Html::script('treegrid/js/jquery.treegrid.js') !!}
+{!! Html::script('js/my_functions.js') !!}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.tree').treegrid().treegrid('collapseAll');
+    });
+</script>
 @endsection

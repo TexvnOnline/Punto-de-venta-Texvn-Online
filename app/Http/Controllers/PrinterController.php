@@ -11,8 +11,6 @@ class PrinterController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:printers.index')->only(['index']);
-        $this->middleware('can:printers.edit')->only(['update']);
     }
     public function index(){
         $printer = Printer::where('id', 1)->firstOrFail();
@@ -21,6 +19,6 @@ class PrinterController extends Controller
     public function update(UpdateRequest $request, Printer $printer)
     {
         $printer->update($request->all());
-        return redirect()->route('printers.index');
+        return redirect()->route('printers.index')->with('toast_success', '¡Información actualizada con éxito!');
     }
 }

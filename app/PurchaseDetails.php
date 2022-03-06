@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseDetails extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'purchase_id',
         'product_id',
@@ -16,7 +18,7 @@ class PurchaseDetails extends Model
         return $this->belongsTo(Purchase::class);
     }
     public function product(){
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->withTrashed();
     }
     
 }

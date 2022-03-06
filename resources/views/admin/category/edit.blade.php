@@ -13,8 +13,8 @@
             Editar categoría
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item"><a href="{{route('categories.index')}}">Categorías</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Editar categoría</li>
             </ol>
@@ -24,37 +24,44 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Editar categoría</h4>
-                    </div>
                     {!! Form::model($category,['route'=>['categories.update',$category], 'method'=>'PUT']) !!}
-                    
-
-                    <div class="form-group">
-                        <label for="name">Nombre</label>
-                        <input type="text" name="name" id="name" value="{{$category->name}}" class="form-control" placeholder="Nombre" required>
-                      </div>
-                      <div class="form-group">
-                        <label for="description">Descripción</label>
-                        <textarea class="form-control" name="description" id="description" rows="3">{{$category->description}}</textarea>
-                    </div>
-                    
-
+                        @if ($category->category_type == 'PRODUCT')
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" name="name" value="{{old('name',$category->name)}}" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="description">Descripción</label>
+                          <textarea class="form-control" name="description" id="description" rows="3" required>{{old('name',$category->description)}}</textarea>
+                        </div>
+                            @if ($category->parent_id == null)
+                            @include('admin.category._form')
+                            @endif
+                        @else
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" name="name" value="{{old('name',$category->name)}}" id="name" class="form-control" placeholder="Nombre" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="description">Descripción</label>
+                          <textarea class="form-control" name="description" id="description" rows="3" required>{{old('name',$category->description)}}</textarea>
+                        </div>
+                        @endif
                      <button type="submit" class="btn btn-primary mr-2">Actualizar</button>
-                     <a href="{{route('categories.index')}}" class="btn btn-light">
+                     <a href="{{ URL::previous() }}" class="btn btn-light">
                         Cancelar
                      </a>
                      {!! Form::close() !!}
                 </div>
-                {{--  <div class="card-footer text-muted">
-                    {{$categories->render()}}
-                </div>  --}}
             </div>
         </div>
     </div>
 </div>
 @endsection
 @section('scripts')
-{!! Html::script('melody/js/data-table.js') !!}
+<script>
+    $(document).ready(function () {
+        $('#icon').select2();
+    });
+</script>
 @endsection

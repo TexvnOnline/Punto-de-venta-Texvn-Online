@@ -192,6 +192,7 @@
       });
       document.getElementById('sales-status-chart-legend').innerHTML = pieChart.generateLegend();
     }
+    
     if ($("#daily-sales-chart").length) {
       var dailySalesChartData = {
         datasets: [{
@@ -246,6 +247,8 @@
       });
       document.getElementById('daily-sales-chart-legend').innerHTML = dailySalesChart.generateLegend();
     }
+
+
     if ($("#inline-datepicker-example").length) {
       $('#inline-datepicker-example').datepicker({
         enableOnReadonly: true,

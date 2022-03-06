@@ -1,7 +1,7 @@
 (function($) {
   'use strict';
   $(function() {
-    if ($('#editable-form').length) {
+    if ($('.editable-div').length) {
       $.fn.editable.defaults.mode = 'inline';
       $.fn.editableform.buttons =
         '<button type="submit" class="btn btn-primary btn-sm editable-submit">' +

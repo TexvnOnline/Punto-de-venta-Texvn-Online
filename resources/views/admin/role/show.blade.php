@@ -1,14 +1,6 @@
 @extends('layouts.admin')
 @section('title','Información sobre el rol')
 @section('styles')
-<style type="text/css">
-    .unstyled-button {
-        border: none;
-        padding: 0;
-        background: none;
-    }
-
-</style>
 @endsection
 @section('create')
 
@@ -26,7 +18,7 @@
             {{$role->name}}
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+            <ol class="breadcrumb breadcrumb-custom">
                 <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item"><a href="{{route('roles.index')}}">Roles</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{$role->name}}</li>

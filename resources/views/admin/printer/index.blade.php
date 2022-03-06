@@ -1,15 +1,6 @@
 @extends('layouts.admin')
 @section('title','Configuración de impresora')
 @section('styles')
-<style type="text/css">
-    .unstyled-button {
-        border: none;
-        padding: 0;
-        background: none;
-    }
-
-</style>
-
 @endsection
 @section('options')
 @endsection
@@ -22,8 +13,8 @@
             Configuración de impresora
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Configuración de impresora</li>
             </ol>
         </nav>
@@ -32,41 +23,22 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <div class="form-group">
+                        <strong><i class="fas fa-file-signature mr-1"></i> Nombre </strong>
 
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Configuración de impresora</h4>
-                        {{--  <i class="fas fa-ellipsis-v"></i>  --}}
-                        {{--  <div class="btn-group">
-                            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                              <a href="{{route('clients.create')}}" class="dropdown-item">Agregar</a>
-                        printers
+                        <p class="text-muted">
+                            {{$printer->name}}
+                        </p>
+                        <hr>
                     </div>
-                </div> --}}
+                </div>
+                <div class="card-footer text-muted">
+                    <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
+                        data-target="#exampleModal-2">Actualizar</button>
+                </div>
             </div>
-
-            <div class="form-group">
-                <strong><i class="fas fa-file-signature mr-1"></i> Nombre </strong>
-
-                <p class="text-muted">
-                    {{$printer->name}}
-                </p>
-                <hr>
-            </div>
-
-
-        </div>
-        <div class="card-footer text-muted">
-
-            <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal"
-                data-target="#exampleModal-2">Actualizar</button>
-
         </div>
     </div>
-</div>
-</div>
 </div>
 
 
@@ -106,6 +78,5 @@
 
 @endsection
 @section('scripts')
-{!! Html::script('melody/js/data-table.js') !!}
-{!! Html::script('melody/js/dropify.js') !!}
+
 @endsection

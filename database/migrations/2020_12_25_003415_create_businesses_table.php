@@ -19,9 +19,16 @@ class CreateBusinessesTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('logo');
-            $table->string('mail');
+            $table->string('email');
             $table->string('address');
             $table->string('ruc');
+            $table->string('phone');
+
+            $table->string('contact_text');
+            $table->string('hours_of_operation');
+            $table->string('latitude');
+            $table->string('length');
+            $table->string('google_maps_link');
 
             $table->timestamps();
         });

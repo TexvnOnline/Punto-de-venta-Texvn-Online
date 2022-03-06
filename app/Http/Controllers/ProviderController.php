@@ -12,11 +12,15 @@ class ProviderController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:providers.create')->only(['create','store']);
-        $this->middleware('can:providers.index')->only(['index']);
-        $this->middleware('can:providers.edit')->only(['edit','update']);
-        $this->middleware('can:providers.show')->only(['show']);
-        $this->middleware('can:providers.destroy')->only(['destroy']);
+        $this->middleware([
+            'permission:providers.index',
+            'permission:providers.create',
+            'permission:providers.store',
+            'permission:providers.show',
+            'permission:providers.edit',
+            'permission:providers.update',
+            'permission:providers.destroy'
+        ]);
     }
     public function index()
     {
@@ -30,7 +34,7 @@ class ProviderController extends Controller
     public function store(StoreRequest $request)
     {
         Provider::create($request->all());
-        return redirect()->route('providers.index');
+        return redirect()->route('providers.index')->with('toast_success', '¡Proveedor registrado con éxito!');
     }
     public function show(Provider $provider)
     {
@@ -43,11 +47,11 @@ class ProviderController extends Controller
     public function update(UpdateRequest $request, Provider $provider)
     {
         $provider->update($request->all());
-        return redirect()->route('providers.index');
+        return redirect()->route('providers.index')->with('toast_success', '¡Proveedor actualizado con éxito!');
     }
     public function destroy(Provider $provider)
     {
         $provider->delete();
-        return redirect()->route('providers.index');
+        return redirect()->back()->with('toast_success', '¡Proveedor eliminado con éxito!');
     }
 }

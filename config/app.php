@@ -67,8 +67,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    'timezone' => 'America/Lima',
+// 'timezone' => 'UTC',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -80,8 +80,8 @@ return [
     |
     */
 
-    'locale' => 'en',
-
+    'locale' => 'es',
+// 'locale' => 'en',
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -175,10 +175,31 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\BlogProvider::class,
+        
+
+        App\Providers\CompanyProvider::class,
+        App\Providers\CategoryProvider::class,
+        App\Providers\ShoppingCartProvider::class,
+        App\Providers\SocialMediaProvider::class,
+        App\Providers\TagProvider::class,
+        App\Providers\PaymentMethodProvider::class,
+        
+        App\Providers\BrandProvider::class,
+        
 
         Barryvdh\DomPDF\ServiceProvider::class,
 
         Milon\Barcode\BarcodeServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
+        Spatie\Permission\PermissionServiceProvider::class,
+
+        willvincent\Rateable\RateableServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -235,6 +256,10 @@ return [
 
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

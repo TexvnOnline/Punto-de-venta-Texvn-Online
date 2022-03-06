@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Client\ChangePasswordRequest;
 use Illuminate\Http\Request;
 use App\User;
-use Caffeinated\Shinobi\Models\Role;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+// use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -12,17 +15,23 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
-        $this->middleware('can:users.create')->only(['create','store']);
-        $this->middleware('can:users.index')->only(['index']);
-        $this->middleware('can:users.edit')->only(['edit','update']);
-        $this->middleware('can:users.show')->only(['show']);
-        $this->middleware('can:users.destroy')->only(['destroy']);
+        $this->middleware([
+            'permission:users.index',
+            'permission:users.create',
+            'permission:users.store',
+            'permission:users.show',
+            'permission:users.edit',
+            'permission:users.update',
+            'permission:users.destroy',
+            'permission:web.update_client',
+            'permission:web.update_password',
+        ]);
     }
-
+    
     public function index()
     {
-        $users = User::get();
+        $users = User::with('roles')->
+        get();
         return view('admin.user.index', compact('users'));
     }
     public function create()
@@ -35,7 +44,7 @@ class UserController extends Controller
         $user = User::create($request->all());
         $user->update(['password'=> Hash::make($request->password)]);
         $user->roles()->sync($request->get('roles'));
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('toast_success', '¡Usuario creado con éxito!');
     }
     public function show(User $user)
     {
@@ -56,21 +65,23 @@ class UserController extends Controller
     }
     public function update(Request $request, User $user)
     {
-        if ($user->id == 1) {
-            return redirect()->route('users.index');
-        }else{
-            $user->update($request->all());
-            $user->roles()->sync($request->get('roles'));
-            return redirect()->route('users.index');
-        }
+        $user->update($request->all());
+        $user->roles()->sync($request->get('roles'));
+        return redirect()->route('users.index')->with('toast_success', '¡Usuario actualizado con éxito!');
     }
     public function destroy(User $user)
     {
-        if ($user->id == 1) {
-            return back();
-        } else {
-            $user->delete();
-            return back();
-        }
+        $user->delete();
+        return redirect()->back()->with('toast_success', '¡Usuario eliminado con éxito!');
+    }
+    public function update_client(Request $request, User $user){
+        $user->update_client($request);
+        return back();
+    }
+    public function update_password(ChangePasswordRequest $request, User $user){
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+        return back();
     }
 }

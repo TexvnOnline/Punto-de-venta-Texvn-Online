@@ -11,8 +11,11 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:reports.day')->only(['reports_day']);
-        $this->middleware('can:reports.date')->only(['reports_date']);
+        $this->middleware([
+            'permission:reports.day',
+            'permission:reports.date',
+            'permission:report.results'
+        ]);
     }
     public function reports_day(){
         $sales = Sale::WhereDate('sale_date', Carbon::today('America/Lima'))->get();
@@ -29,6 +32,7 @@ class ReportController extends Controller
         $ff = $request->fecha_fin. ' 23:59:59';
         $sales = Sale::whereBetween('sale_date', [$fi, $ff])->get();
         $total = $sales->sum('total');
-        return view('admin.report.reports_date', compact('sales', 'total')); 
+        return view('admin.report.reports_date', compact('sales', 'total'));
+        // mejorar el resultado de reportes y agregar alertas
     }
 }

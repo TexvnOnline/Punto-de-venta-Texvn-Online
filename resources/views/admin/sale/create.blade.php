@@ -2,14 +2,6 @@
 @section('title','Registro de venta')
 @section('styles')
 {!! Html::style('select/dist/css/bootstrap-select.min.css') !!}
-<style type="text/css">
-    .unstyled-button {
-        border: none;
-        padding: 0;
-        background: none;
-    }
-
-</style>
 @endsection
 @section('create')
 <li class="nav-item d-none d-lg-flex">
@@ -29,8 +21,8 @@
             Registro de venta
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item"><a href="{{route('sales.index')}}">Ventas</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Registro de venta</li>
             </ol>
@@ -52,7 +44,7 @@
                 </div>
                 <div class="card-footer text-muted">
                     <button type="submit" id="guardar" class="btn btn-primary float-right">Registrar</button>
-                     <a href="{{route('sales.index')}}" class="btn btn-light">
+                     <a href="{{ URL::previous() }}" class="btn btn-light">
                         Cancelar
                      </a>
                 </div>
@@ -113,7 +105,52 @@
 {!! Html::script('js/sweetalert2.all.min.js') !!}
 
 <script>
+
+    var product_id1 = $('#product_id1');
+	
+    product_id1.change(function(){
+            $.ajax({
+                url: "{{route('get_products_by_id')}}",
+                method: 'GET',
+                data:{
+                    product_id: product_id1.val(),
+                },
+                success: function(data){
+                    $("#price").val(data.sell_price);
+                    $("#stock").val(data.stock);
+                    $("#code").val(data.code);
+            }
+        });
+    });
     
+    
+    $(obtener_registro());
+    function obtener_registro(code){
+        $.ajax({
+            url: "{{route('get_products_by_barcode')}}",
+            type: 'GET',
+            data:{
+                code: code
+            },
+            dataType: 'json',
+            success:function(data){
+                console.log(data);
+                $("#price").val(data.sell_price);
+                $("#stock").val(data.stock);
+                $("#product_id1").val(data.id);
+            }
+        });
+    }
+    $(document).on('keyup', '#code', function(){
+        var valorResultado = $(this).val();
+        if(valorResultado!=""){
+            obtener_registro(valorResultado);
+        }else{
+            obtener_registro();
+        }
+    })
+
+
 $(document).ready(function () {
     $("#agregar").click(function () {
         agregar();
@@ -125,63 +162,11 @@ total = 0;
 subtotal = [];
 $("#guardar").hide();
 
-$("#product_id").change(mostrarValores);
-function mostrarValores() {
-    datosProducto = document.getElementById('product_id').value.split('_');
-    $("#price").val(datosProducto[2]);
-    $("#stock").val(datosProducto[1]);
-}
-
-var product_id = $('#product_id');
-	
-    product_id.change(function(){
-        $.ajax({
-            url: "{{route('get_products_by_id')}}",
-            method: 'GET',
-            data:{
-                product_id: product_id.val(),
-            },
-            success: function(data){
-                $("#price").val(data.sell_price);
-                $("#stock").val(data.stock);
-                $("#code").val(data.code);
-        }
-    });
-});
-
-
-$(obtener_registro());
-function obtener_registro(code){
-    $.ajax({
-        url: "{{route('get_products_by_barcode')}}",
-        type: 'GET',
-        data:{
-            code: code
-        },
-        dataType: 'json',
-        success:function(data){
-            console.log(data);
-            $("#price").val(data.sell_price);
-            $("#stock").val(data.stock);
-            $("#product_id").val(data.id);
-        }
-    });
-}
-$(document).on('keyup', '#code', function(){
-    var valorResultado = $(this).val();
-    if(valorResultado!=""){
-        obtener_registro(valorResultado);
-    }else{
-        obtener_registro();
-    }
-})
-
-
 function agregar() {
-    datosProducto = document.getElementById('product_id').value.split('_');
+    
 
-    product_id = datosProducto[0];
-    producto = $("#product_id option:selected").text();
+    product_id = $("#product_id1").val();
+    producto = $("#product_id1 option:selected").text();
     quantity = $("#quantity").val();
     discount = $("#discount").val();
     price = $("#price").val();

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Editar rol')
+@section('title','Modificar permisos del rol '. $role->name)
 @section('styles')
 @endsection
 @section('options')
@@ -26,24 +26,24 @@
                 <div class="card-body">
                     
                     <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Editar rol</h4>
+                        <h4 class="card-title">Modificar permisos del rol {{$role->name}}</h4>
                     </div>
                     {!! Form::model($role,['route'=>['roles.update',$role], 'method'=>'PUT']) !!}
                     
-                    <div class="form-group">
-                        <label for="name">Nombre</label>
-                        <input type="text"
+                        {{--  <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text"
                           class="form-control" name="name" id="name" value="{{$role->name}}" aria-describedby="helpId" placeholder="">
-                      </div>
-                      <div class="form-group">
+                         </div>  --}}
+                        {{--  <div class="form-group">
                           <label for="slug">Slug</label>
                           <input type="text"
                             class="form-control" name="slug" id="slug" value="{{$role->slug}}" aria-describedby="helpId" placeholder="">
                         </div>
-                      <div class="form-group">
-                        <label for="description">Descripción</label>
-                        <textarea class="form-control" name="description" id="description" rows="3">{{$role->description}}</textarea>
-                      </div>
+                        <div class="form-group">
+                            <label for="description">Descripción</label>
+                            <textarea class="form-control" name="description" id="description" rows="3">{{$role->description}}</textarea>
+                        </div>  --}}
 
                     @include('admin.role._form')
                     

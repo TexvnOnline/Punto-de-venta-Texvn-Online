@@ -2,7 +2,7 @@
   'use strict';
   $(function() {
     $('#order-listing').DataTable({
-
+      responsive: true,
       "aLengthMenu": [
         [5, 10, 15, -1],
         [5, 10, 15, "All"]
@@ -62,7 +62,7 @@
       }
     });
 
-
+    
 
     $('#order-listing').each(function() {
       var datatable = $(this);

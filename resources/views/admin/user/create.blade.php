@@ -13,8 +13,8 @@
             Registro de usuario
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item"><a href="{{route('users.index')}}">Usuarios</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Registro de usuario</li>
             </ol>
@@ -24,10 +24,6 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Registro de usuario</h4>
-                    </div>
                     {!! Form::open(['route'=>'users.store', 'method'=>'POST']) !!}
 
                     <div class="form-group">

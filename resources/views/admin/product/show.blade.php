@@ -33,34 +33,17 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="border-bottom text-center pb-4">
-
-                                <img src="{{asset('image/'.$product->image)}}" alt="profile" class="img-lg  mb-3" />
-                                {{--  <p>Nombre de proveedor. </p>  --}}
-
-
                                 <h3>{{$product->name}}</h3>
                                 <div class="d-flex justify-content-between">
                                 </div>
                             </div>
-                            {{--  <div class="border-bottom py-4">
-                                <div class="list-group">
-                                    <button type="button" class="list-group-item list-group-item-action active">
-                                        Sobre producto
-                                    </button>
-                                    <button type="button"
-                                        class="list-group-item list-group-item-action">Productos</button>
-                                    <button type="button" class="list-group-item list-group-item-action">Registrar
-                                        producto</button>
-                                </div>
-                            </div>  --}}
-
                             <div class="py-4">
                                 <p class="clearfix">
                                     <span class="float-left">
                                         Status
                                     </span>
                                     <span class="float-right text-muted">
-                                        {{$product->status}}
+                                        {{$product->status()}}
                                     </span>
                                 </p>
                                 <p class="clearfix">
@@ -78,31 +61,12 @@
                                         Categoría
                                     </span>
                                     <span class="float-right text-muted">
-                                        {{--  PRODUCTOS POR CATEGORIA  --}}
-                                        <a href="">
-                                            {{$product->category->name}}
-                                        </a>
+                                        
+                                            {{$product->subcategory->name}}
+                                        
                                     </span>
                                 </p>
-                                {{--  <p class="clearfix">
-                                    <span class="float-left">
-                                        Facebook
-                                    </span>
-                                    <span class="float-right text-muted">
-                                        <a href="#">David Grey</a>
-                                    </span>
-                                </p>  --}}
-                                {{--  <p class="clearfix">
-                                    <span class="float-left">
-                                        Twitter
-                                    </span>
-                                    <span class="float-right text-muted">
-                                        <a href="#">@davidgrey</a>
-                                    </span>
-                                </p>  --}}
                             </div>
-
-                            {{--  <button class="btn btn-primary btn-block">{{$product->status}}</button>  --}}
                             @if ($product->status == 'ACTIVE')
                             <a href="{{route('change.status.products', $product)}}" class="btn btn-success btn-block">Activo</a>
                             @else

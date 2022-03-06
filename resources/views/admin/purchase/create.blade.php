@@ -14,8 +14,8 @@
             Registro de compra
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item"><a href="{{route('purchases.index')}}">Compras</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Registro de compra</li>
             </ol>
@@ -26,20 +26,13 @@
             <div class="card">
                 {!! Form::open(['route'=>'purchases.store', 'method'=>'POST']) !!}
                 <div class="card-body">
-                    
-                    <div class="d-flex justify-content-between">
-                        <h4 class="card-title">Registro de compra</h4>
-                    </div>
-                    
                     @include('admin.purchase._form')
-                     
-                     
                 </div>
                 <div class="card-footer text-muted">
                     <button type="submit" id="guardar" class="btn btn-primary float-right">Registrar</button>
-                     <a href="{{route('purchases.index')}}" class="btn btn-light">
+                    <a href="{{ URL::previous() }}" class="btn btn-light">
                         Cancelar
-                     </a>
+                    </a>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -67,13 +60,13 @@
     $("#guardar").hide();
 
 
-    var product_id = $('#product_id');
-    product_id.change(function(){
+    var product_id1 = $('#product_id1');
+    product_id1.change(function(){
         $.ajax({
             url: "{{route('get_products_by_id')}}",
             method: 'GET',
             data:{
-                product_id: product_id.val(),
+                product_id: product_id1.val(),
             },
             success: function(data){
                 $("#code").val(data.code);
@@ -91,7 +84,7 @@
             dataType: 'json',
             success:function(data){
                 console.log(data);
-                $("#product_id").val(data.id);
+                $("#product_id1").val(data.id);
             }
         });
     }
@@ -107,8 +100,8 @@
     
     function agregar() {
     
-        product_id = $("#product_id").val();
-        producto = $("#product_id option:selected").text();
+        product_id = $("#product_id1").val();
+        producto = $("#product_id1 option:selected").text();
         quantity = $("#quantity").val();
         price = $("#price").val();
         impuesto = $("#tax").val();

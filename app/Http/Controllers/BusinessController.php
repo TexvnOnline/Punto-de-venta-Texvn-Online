@@ -11,8 +11,10 @@ class BusinessController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:business.index')->only(['index']);
-        $this->middleware('can:business.edit')->only(['update']);
+        $this->middleware([
+            'permission:business.index',
+            'permission:business.update'
+        ]);
     }
     public function index(){
         $business = Business::where('id', 1)->firstOrFail();
@@ -20,16 +22,7 @@ class BusinessController extends Controller
     }
     public function update(UpdateRequest $request, Business $business)
     {
-        if($request->hasFile('picture')){
-            $file = $request->file('picture');
-            $image_name = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path("/image"),$image_name);
-        }
-
-        $business->update($request->all()+[
-            'logo'=>$image_name,
-        ]);
-
-        return redirect()->route('business.index');
+        $business->my_update($request);
+        return redirect()->route('business.index')->with('toast_success', '¡Información actualizada con éxito!');
     }
 }

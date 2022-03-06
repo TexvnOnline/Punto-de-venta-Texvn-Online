@@ -24,35 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-
             'name'=>'string|required|unique:products|max:255',
-         
-            'sell_price'=>'required',
-
-            'code'=>'nullable|string|max:8|min:8',
-            
-           
-        ];
-    }
-    public function messages()
-    {
-        return[
-            'name.string'=>'El valor no es correcto.',
-            'name.required'=>'El campo es requerido.',
-            'name.unique'=>'El producto ya está registrado.',
-            'name.max'=>'Solo se permite 255 caracteres.',
-
-            
-
-            'sell_price.required'=>'El campo es requerido.',
-
-            'code.string'=>'El valor no es correcto.',
-            'code.max'=>'Solo se permite 8 dígitos.',
-            'code.min'=>'Se requiere de 8 dígitos.',
-
-            
-
-
         ];
     }
 }

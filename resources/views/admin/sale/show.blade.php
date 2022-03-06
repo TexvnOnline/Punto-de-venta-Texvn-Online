@@ -19,9 +19,9 @@
             Detalles de venta
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
-                <li class="breadcrumb-item"><a href="#">Ventas</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
+                <li class="breadcrumb-item"><a href="{{route('sales.index')}}">Ventas</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Detalles de venta</li>
             </ol>
         </nav>
@@ -37,7 +37,9 @@
                         </div>
                         <div class="col-md-4 text-center">
                             <label class="form-control-label"><strong>Vendedor</strong></label>
-                            <p>{{$sale->user->name}}</p>
+                            <p>
+                                <a href="{{route('users.show',$sale->user)}}">{{$sale->user->name}}</a>
+                            </p>
                         </div>
                         <div class="col-md-4 text-center">
                             <label class="form-control-label"><strong>Número Venta</strong></label>

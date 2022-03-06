@@ -14427,8 +14427,8 @@ input[type="button"].btn-block {
 .list-group-item.active {
   z-index: 2;
   color: #fff;
-  background-color: #04b76b;
-  border-color: #04b76b;
+  background-color: #007bff;
+  border-color: #007bff;
 }
 
 .list-group-flush .list-group-item {
@@ -27613,7 +27613,7 @@ body.avgrund-active {
 .lightGallery .image-tile .demo-gallery-poster {
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom:0;
   left: 0;
   right: 0;
 }

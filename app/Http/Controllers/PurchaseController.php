@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Purchase\StoreRequest;
 use App\Http\Requests\Purchase\UpdateRequest;
 use App\PurchaseDetails;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+
 
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -20,13 +19,15 @@ class PurchaseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('can:purchases.create')->only(['create','store']);
-        $this->middleware('can:purchases.index')->only(['index']);
-        $this->middleware('can:purchases.show')->only(['show']);
-
-        $this->middleware('can:change.status.purchases')->only(['change_status']);
-        $this->middleware('can:purchases.pdf')->only(['pdf']);
-        $this->middleware('can:upload.purchases')->only(['upload']);
+        $this->middleware([
+            'permission:purchases.index',
+            'permission:purchases.create',
+            'permission:purchases.store',
+            'permission:purchases.show',
+            'permission:purchases.pdf',
+            'permission:upload.purchases',
+            'permission:change.status.purchases',
+        ]);
     }
 
     public function index()
@@ -37,20 +38,15 @@ class PurchaseController extends Controller
     public function create()
     {
         $providers = Provider::get();
-        $products = Product::where('status', 'ACTIVE')->get();
+
+        $products = Product::pos_products()->get();
+
         return view('admin.purchase.create', compact('providers','products'));
     }
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, Purchase $purchase)
     {
-        $purchase = Purchase::create($request->all()+[
-            'user_id'=>Auth::user()->id,
-            'purchase_date'=>Carbon::now('America/Lima'),
-        ]);
-        foreach ($request->product_id as $key => $product) {
-            $results[] = array("product_id"=>$request->product_id[$key], "quantity"=>$request->quantity[$key], "price"=>$request->price[$key]);
-        }
-        $purchase->purchaseDetails()->createMany($results);
-        return redirect()->route('purchases.index');
+        $purchase->my_store($request);
+        return redirect()->route('purchases.index')->with('toast_success', '¡Compra registrada con éxito!');
     }
     public function show(Purchase $purchase)
     {
@@ -98,10 +94,10 @@ class PurchaseController extends Controller
     {
         if ($purchase->status == 'VALID') {
             $purchase->update(['status'=>'CANCELED']);
-            return redirect()->back();
+            return redirect()->back()->with('toast_success', '¡Estado cambiado con éxito!');
         } else {
             $purchase->update(['status'=>'VALID']);
-            return redirect()->back();
+            return redirect()->back()->with('toast_success', '¡Estado cambiado con éxito!');
         } 
     }
 }

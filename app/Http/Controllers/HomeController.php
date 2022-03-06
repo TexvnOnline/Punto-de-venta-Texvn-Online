@@ -2,45 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
+use App\OrderDetail;
+use App\Sale;
+use App\Product;
+use App\Purchase;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware([
+            'permission:home'
+        ]);
     }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        $comprasmes=DB::select('SELECT month(c.purchase_date) as mes, sum(c.total) as totalmes from purchases c where c.status="VALID" group by month(c.purchase_date) order by month(c.purchase_date) desc limit 12');
-        $ventasmes=DB::select('SELECT month(v.sale_date) as mes, sum(v.total) as totalmes from sales v where v.status="VALID" group by month(v.sale_date) order by month(v.sale_date) desc limit 12');
-
-
-        // $comprasmes=DB::select('SELECT monthname(c.purchase_date) as mes, sum(c.total) as totalmes from purchases c where c.status="VALID" group by monthname(c.purchase_date) order by month(c.purchase_date) desc limit 12');
-        // $ventasmes=DB::select('SELECT monthname(v.sale_date) as mes, sum(v.total) as totalmes from sales v where v.status="VALID" group by monthname(v.sale_date) order by month(v.sale_date) desc limit 12');
-
-        $ventasdia=DB::select('SELECT DATE_FORMAT(v.sale_date,"%d/%m/%Y") as dia, sum(v.total) as totaldia from sales v where v.status="VALID" group by v.sale_date order by day(v.sale_date) desc limit 15');
-        $totales=DB::select('SELECT (select ifnull(sum(c.total),0) from purchases c where DATE(c.purchase_date)=curdate() and c.status="VALID") as totalcompra, (select ifnull(sum(v.total),0) from sales v where DATE(v.sale_date)=curdate() and v.status="VALID") as totalventa');
+        $comprasmes = Purchase::where('status', 'VALID')->select(
+            DB::raw("count(*) as count"),
+            DB::raw("SUM(total) as totalmes"),
+            DB::raw("DATE_FORMAT(purchase_date,'%M %Y') as mes")
+        )->groupBy('mes')->take(12)->get();
+        $orders_of_the_day = Order::where('order_date', Carbon::now()->format('Y-m-d'))->take(5)->get();
+        $orders_of_the_day_status = Order::where('order_date', Carbon::now()->format('Y-m-d'))
+        ->select(
+            DB::raw("count(*) as count"),
+            DB::raw("shipping_status as status")
+        )->groupBy('status')->get();
+        $ventasmes = Sale::where('status', 'VALID')->select(
+            DB::raw("count(*) as count"),
+            DB::raw("SUM(total) as totalmes"),
+            DB::raw("DATE_FORMAT(sale_date,'%M %Y') as mes")
+        )->groupBy('mes')->take(12)->get();
+        $ventasdia = Sale::where('status', 'VALID')->select(
+            DB::raw("count(*) as count"),
+            DB::raw("SUM(total) as total"),
+            DB::raw("DATE_FORMAT(sale_date,'%D %M %Y') as date")
+        )->groupBy('date')->take(30)->get();
+        $most_ordered_products = OrderDetail::select(
+            DB::raw("SUM(quantity) as total"),
+            DB::raw("product_id as product_id")
+        )->groupBy('product_id')->take(12)->get();
+        $order_mes = Order::where('order_date', Carbon::now()->subdays(30)->format('Y-m-d'))->select(
+            DB::raw("count(*) as count"),
+            DB::raw("shipping_status as status")
+        )->groupBy('status')->get();
+        $totales=DB::select('SELECT (select ifnull(sum(c.total),0) from purchases c where DATE(MONTH(c.purchase_date))=MONTH(curdate()) and c.status="VALID") as totalcompra, (select ifnull(sum(v.total),0) from sales v where DATE(MONTH(v.sale_date))=MONTH(curdate()) and v.status="VALID") as totalventa');
         $productosvendidos=DB::select('SELECT p.code as code, 
         sum(dv.quantity) as quantity, p.name as name , p.id as id , p.stock as stock from products p 
         inner join sale_details dv on p.id=dv.product_id 
         inner join sales v on dv.sale_id=v.id where v.status="VALID" 
-        and year(v.sale_date)=year(curdate()) 
+        and MONTH(v.sale_date)=MONTH(curdate()) 
         group by p.code ,p.name, p.id , p.stock order by sum(dv.quantity) desc limit 10');
-       
-       
-        return view('home', compact( 'comprasmes', 'ventasmes', 'ventasdia', 'totales', 'productosvendidos'));
+        return view('home', compact( 'comprasmes', 'ventasmes', 'ventasdia', 'totales', 'productosvendidos','order_mes','most_ordered_products','orders_of_the_day','orders_of_the_day_status'));
     }
 }

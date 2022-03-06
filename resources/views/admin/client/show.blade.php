@@ -19,8 +19,8 @@
             {{$client->name}}
         </h3>
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Panel administrador</a></li>
+            <ol class="breadcrumb breadcrumb-custom">
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Panel administrador</a></li>
                 <li class="breadcrumb-item"><a href="{{route('clients.index')}}">Clientes</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{$client->name}}</li>
             </ol>
@@ -47,20 +47,13 @@
                                         data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">
                                         Historial de compras
                                     </a>
-                                    {{--  <button type="button" class="list-group-item list-group-item-action">Registrar
-                                        producto</button>  --}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-8 pl-lg-5">
-
-
-
-
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="list-home" user="tabpanel"
                                     aria-labelledby="list-home-list">
-
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <h4>Información de cliente</h4>
@@ -108,13 +101,9 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
                                 <div class="tab-pane fade" id="list-profile" user="tabpanel"
                                     aria-labelledby="list-profile-list">
-
-
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <h4>Historial de compras</h4>
@@ -159,10 +148,7 @@
                                                             <td style="width: 50px;">
                         
                                                                 <a href="{{route('sales.pdf', $sale)}}" class="jsgrid-button jsgrid-edit-button"><i class="far fa-file-pdf"></i></a>
-                                                                {{--  <a href="#" class="jsgrid-button jsgrid-edit-button"><i class="fas fa-print"></i></a>  --}}
                                                                 <a href="{{route('sales.show', $sale)}}" class="jsgrid-button jsgrid-edit-button"><i class="far fa-eye"></i></a>
-                                                           
-                                                              
                                                             </td>
                                                         </tr>
                                                         @endforeach
@@ -181,16 +167,11 @@
 
                                 </div>
                             </div>
-
-
-
-
-
                         </div>
                     </div>
                 </div>
                 <div class="card-footer text-muted">
-                    <a href="{{route('clients.index')}}" class="btn btn-primary float-right">Regresar</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-primary float-right">Regresar</a>
                 </div>
             </div>
         </div>
