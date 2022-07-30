@@ -7,6 +7,7 @@ use App\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+<<<<<<< HEAD
 
 class ProductFactory extends Factory
 {
@@ -40,3 +41,17 @@ class ProductFactory extends Factory
         ];
     }
 }
+=======
+$factory->define(Product::class, function (Faker $faker) {
+    return [
+        'code'=>$faker->ean8,
+        'name'=>$faker->streetName,
+        'stock'=>$faker->buildingNumber,
+        'image'=>$faker->imageUrl($width = 270, $height = 270),
+        'sell_price'=>$faker->randomNumber(2),
+        'status'=>'ACTIVE',
+        'category_id'=>rand(1,20),
+        'provider_id'=>rand(1,30),
+    ];
+});
+>>>>>>> b53b1fea2efec8f2d84b498e16d1483e9991dbf9

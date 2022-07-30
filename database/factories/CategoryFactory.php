@@ -6,6 +6,7 @@ use App\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+<<<<<<< HEAD
 class CategoryFactory extends Factory
 {
     /**
@@ -63,3 +64,11 @@ class CategoryFactory extends Factory
         });
     }
 }
+=======
+$factory->define(Category::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'description' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+    ];
+});
+>>>>>>> b53b1fea2efec8f2d84b498e16d1483e9991dbf9
